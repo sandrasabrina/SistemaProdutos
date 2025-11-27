@@ -1,15 +1,15 @@
 package app;
 
 import algorithm.AVLTree;
-import algorithm.Arvore;
+import algorithm.Tree;
 import algorithm.MergeSort;
-import algorithm.Ordenacao;
-import exception.NegocioException;
+import algorithm.SortingAlgorithm;
+import exception.BusinessException;
 import model.InfoProd;
-import model.Produto;
-import model.ProdutoAlimenticio;
-import model.ProdutoArtesanal;
-import repository.RepositorioHash;
+import model.Product;
+import model.FoodProduct;
+import model.HandmadeProduct;
+import repository.HashRepository;
 
 import java.lang.reflect.Method;
 import java.util.Comparator;
@@ -17,204 +17,204 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Ponto de entrada do Sistema de Gerenciamento de Produtos Naturais.
- * Demonstra todas as funcionalidades e a integração dos componentes.
+ * Entry point for the Natural Products Management System.
+ * Demonstrates all functionalities and integration of components.
  */
-public class SistemaProdutos {
-    
-    // Repositório de produtos indexado por ID (HashMap)
-    private RepositorioHash<Produto> repositorio = new RepositorioHash<>(Produto::getId);
-    
-    // Árvore AVL indexada por Nome (para busca rápida e ordenação em-ordem)
-    private Arvore<String, Produto> indiceNome = new AVLTree<>();
-    
-    // Algoritmo de Ordenação
-    private Ordenacao<Produto> sortAlgorithm = new MergeSort<>();
+public class ProductSystem {
+
+    // Hash repository for products indexed by ID (HashMap)
+    private final HashRepository<Product> productRepository = new HashRepository<>(Product::getId);
+
+    // AVL Tree indexed by Name (for fast search and inorder sorting)
+    private final Tree<String, Product> nameIndex = new AVLTree<>();
+
+    // Sorting algorithm (MergeSort)
+    private final SortingAlgorithm<Product> sortingAlgorithm = new MergeSort<>();
 
     public static void main(String[] args) {
-        SistemaProdutos sistema = new SistemaProdutos();
-        
-        // 1. Configuração e demonstração de anotações e regras de negócio
-        sistema.demonstrarAnotacoes();
-        sistema.demonstrarRegraNegocio();
-        
-        // 2. Cadastro de Produtos Válidos
-        sistema.cadastrarProdutosTeste();
-        
-        // 3. Demonstração de CRUD (Hash)
-        sistema.demonstrarCrud();
+        ProductSystem system = new ProductSystem();
 
-        // 4. Demonstração da Árvore AVL (Busca e Listagem Em-Ordem)
-        sistema.demonstrarArvoreAVL();
-        
-        // 5. Demonstração e Profiling do MergeSort
-        sistema.demonstrarOrdenacaoEProfiling();
+        // 1. Demonstrate annotations and business rules
+        system.demonstrateAnnotations();
+        system.demonstrateBusinessRules();
+
+        // 2. Register Valid Products
+        system.registerTestProducts();
+
+        // 3. Demonstrate CRUD (Hash)
+        system.demonstrateCrud();
+
+        // 4. Demonstrate AVL Tree (Search and Inorder Listing)
+        system.demonstrateAvlTree();
+
+        // 5. Demonstrate and Profile MergeSort
+        system.demonstrateSortingAndProfiling();
     }
 
     /**
-     * Cadastra um produto no repositório Hash e na árvore AVL.
+     * Registers a product in both the Hash repository and AVL tree.
      */
-    private void cadastrar(Produto p) {
-        repositorio.cadastrar(p);
-        indiceNome.inserir(p.getNome(), p);
-    }
-    
-    private void cadastrarProdutosTeste() {
-        System.out.println("\n\n##########################################################");
-        System.out.println("### 2. CADASTRO DE PRODUTOS VÁLIDOS (Hash e AVL) ");
-        System.out.println("##########################################################");
-        try {
-            // Produtos cadastrados para demonstração
-            Produto p1 = new ProdutoAlimenticio("A001", "Mel Orgânico", 25.50, "Alimentício", 50, "Fazenda Pura", "2026-01-01");
-            Produto p2 = new ProdutoArtesanal("B002", "Sabonete Natural Lavanda", 12.00, "Higiene", 120, "Atelie da Terra", "Óleos Essenciais");
-            Produto p3 = new ProdutoAlimenticio("C003", "Café Gourmet Moído", 45.90, "Alimentício", 80, "Sítio do Vovô", "2025-12-31");
-            Produto p4 = new ProdutoAlimenticio("A004", "Geleia de Morango", 18.75, "Alimentício", 60, "Fazenda Pura", "2026-03-01");
-            Produto p5 = new ProdutoArtesanal("B005", "Vaso de Cerâmica", 60.00, "Decoração", 15, "Barro Arte", "Argila");
-            
-            cadastrar(p1);
-            cadastrar(p2);
-            cadastrar(p3);
-            cadastrar(p4);
-            cadastrar(p5);
-            
-            System.out.println("\n5 Produtos cadastrados com sucesso no Repositório (Hash) e no Índice (AVL).");
-
-        } catch (NegocioException e) {
-            System.err.println("Erro irrecuperável ao cadastrar produtos de teste: " + e.getMessage());
-        }
+    private void registerProduct(Product product) {
+        productRepository.register(product);
+        nameIndex.insert(product.getName(), product);
     }
 
-    private void demonstrarRegraNegocio() {
+    private void registerTestProducts() {
         System.out.println("\n\n##########################################################");
-        System.out.println("### 1. DEMONSTRAÇÃO DE REGRA DE NEGÓCIO (NegocioException) ");
+        System.out.println("### 2. REGISTRATION OF VALID PRODUCTS (Hash and AVL) ");
         System.out.println("##########################################################");
-        
-        // Teste de Preço Inválido (Preço deve ser > 0)
         try {
-            new ProdutoAlimenticio("X001", "Teste Preço", -5.00, "Teste", 10, "Local", "2025-01-01");
-        } catch (NegocioException e) {
-            System.err.println("ERRO ESPERADO (Preço Negativo): " + e.getMessage());
-        }
-        
-        // Teste de Estoque Inválido (Estoque deve ser >= 0)
-        try {
-            new ProdutoAlimenticio("X002", "Teste Estoque", 10.00, "Teste", -1, "Local", "2025-01-01");
-        } catch (NegocioException e) {
-            System.err.println("ERRO ESPERADO (Estoque Negativo): " + e.getMessage());
+            // Sample products for demonstration
+            Product p1 = new FoodProduct("A001", "Organic Honey", 25.50, "Food", 50, "Pure Farm", "2026-01-01");
+            Product p2 = new HandmadeProduct("B002", "Natural Lavender Soap", 12.00, "Hygiene", 120, "Earth Atelier", "Essential Oils");
+            Product p3 = new FoodProduct("C003", "Gourmet Ground Coffee", 45.90, "Food", 80, "Grandpa's Ranch", "2025-12-31");
+            Product p4 = new FoodProduct("A004", "Strawberry Jam", 18.75, "Food", 60, "Pure Farm", "2026-03-01");
+            Product p5 = new HandmadeProduct("B005", "Ceramic Vase", 60.00, "Decoration", 15, "Art Clay", "Clay");
+
+            registerProduct(p1);
+            registerProduct(p2);
+            registerProduct(p3);
+            registerProduct(p4);
+            registerProduct(p5);
+
+            System.out.println("\n5 Products successfully registered in the Repository (Hash) and Index (AVL).");
+
+        } catch (BusinessException e) {
+            System.err.println("Unrecoverable error registering demo products: " + e.getMessage());
         }
     }
 
-    private void demonstrarAnotacoes() {
+    private void demonstrateBusinessRules() {
         System.out.println("\n\n##########################################################");
-        System.out.println("### 1. LEITURA DE ANOTAÇÃO @InfoProd (Reflexão) ");
+        System.out.println("### 1. BUSINESS RULE DEMONSTRATION (BusinessException) ");
         System.out.println("##########################################################");
-        
-        // Leitura da anotação na classe Produto
-        InfoProd infoProd = Produto.class.getAnnotation(InfoProd.class);
-        if (infoProd != null) {
-            System.out.println("Anotação na classe Produto:");
-            System.out.println("  Versão: " + infoProd.versao());
-            System.out.println("  Categoria Padrão: " + infoProd.categoria());
-        }
-        
-        // Leitura da anotação na classe RepositorioHash
-        InfoProd infoRepo = RepositorioHash.class.getAnnotation(InfoProd.class);
-        if (infoRepo != null) {
-            System.out.println("\nAnotação na classe RepositorioHash:");
-            System.out.println("  Versão: " + infoRepo.versao());
-            System.out.println("  Categoria Padrão: " + infoRepo.categoria());
+
+        // Test for invalid Price (Price must be > 0)
+        try {
+            new FoodProduct("X001", "Test Price", -5.00, "Test", 10, "Local", "2025-01-01");
+        } catch (BusinessException e) {
+            System.err.println("EXPECTED ERROR (Negative Price): " + e.getMessage());
         }
 
-        // Exemplo de busca de um método existente (listarTodos) via Reflection para demonstrar Type Introspection
+        // Test for invalid Stock (Stock must be >= 0)
         try {
-            Method metodoListarTodos = RepositorioHash.class.getMethod("listarTodos");
-            System.out.println("\nMétodo 'listarTodos' encontrado com sucesso em RepositorioHash via Reflection.");
+            new FoodProduct("X002", "Test Stock", 10.00, "Test", -1, "Local", "2025-01-01");
+        } catch (BusinessException e) {
+            System.err.println("EXPECTED ERROR (Negative Stock): " + e.getMessage());
+        }
+    }
+
+    private void demonstrateAnnotations() {
+        System.out.println("\n\n##########################################################");
+        System.out.println("### 1. READING @InfoProd ANNOTATION (Reflection) ");
+        System.out.println("##########################################################");
+
+        // Read annotation on Product class
+        InfoProd productInfo = Product.class.getAnnotation(InfoProd.class);
+        if (productInfo != null) {
+            System.out.println("Annotation on Product class:");
+            System.out.println("  Version: " + productInfo.version());
+            System.out.println("  Default Category: " + productInfo.category());
+        }
+
+        // Read annotation on HashRepository class
+        InfoProd repoInfo = HashRepository.class.getAnnotation(InfoProd.class);
+        if (repoInfo != null) {
+            System.out.println("\nAnnotation on HashRepository class:");
+            System.out.println("  Version: " + repoInfo.version());
+            System.out.println("  Default Category: " + repoInfo.category());
+        }
+
+        // Example of searching an existing method (listAll) via Reflection to demonstrate Type Introspection
+        try {
+            Method listAllMethod = HashRepository.class.getMethod("listAll");
+            System.out.println("\nMethod 'listAll' found successfully in HashRepository via Reflection.");
         } catch (NoSuchMethodException e) {
-            System.err.println("Erro: O método 'listarTodos' esperado não foi encontrado em RepositorioHash.");
+            System.err.println("Error: Expected method 'listAll' was not found in HashRepository.");
         }
     }
 
-    private void demonstrarCrud() {
+    private void demonstrateCrud() {
         System.out.println("\n\n##########################################################");
-        System.out.println("### 3. DEMONSTRAÇÃO DE CRUD (REPOSITÓRIO HASH) ");
+        System.out.println("### 3. CRUD DEMONSTRATION (HASH REPOSITORY) ");
         System.out.println("##########################################################");
-        
-        // 3a. Buscar
-        Produto buscado = repositorio.buscar("C003");
-        System.out.println("\n[BUSCA] ID C003: " + (buscado != null ? buscado.getNome() : "Não encontrado"));
-        
-        // 3b. Listar Todos
-        System.out.println("\n[LISTAR TODOS (Desordenado - HashMap)]: ");
-        repositorio.listarTodos().forEach(System.out::println);
-        
-        // 3c. Remover
-        repositorio.remover("A004");
-        System.out.println("\n[REMOVER] Produto com ID A004 removido.");
-        
-        // 3d. Listar Todos Após Remoção
-        System.out.println("\n[LISTAR APÓS REMOÇÃO]:");
-        repositorio.listarTodos().forEach(System.out::println);
-    }
-    
-    private void demonstrarArvoreAVL() {
-        System.out.println("\n\n##########################################################");
-        System.out.println("### 4. DEMONSTRAÇÃO DA ÁRVORE AVL (Indexação por Nome) ");
-        System.out.println("##########################################################");
-        
-        // 4a. Busca na Árvore
-        Produto buscadoArvore = indiceNome.buscar("Mel Orgânico");
-        System.out.println("\n[BUSCA AVL] Nome 'Mel Orgânico': " + (buscadoArvore != null ? buscadoArvore.getId() : "Não encontrado"));
-        
-        // 4b. Listagem Em-Ordem (Travessia In-Order, que retorna os itens ordenados pela chave (Nome))
-        System.out.println("\n[IMPRESSÃO EM-ORDEM (Ordenado por Nome - AVL)]: ");
-        List<Produto> listaEmOrdem = indiceNome.listarEmOrdem();
-        listaEmOrdem.forEach(p -> System.out.println(" - " + p.getNome() + " (ID: " + p.getId() + ")"));
+
+        // 3a. Search
+        Product foundProduct = productRepository.search("C003");
+        System.out.println("\n[SEARCH] ID C003: " + (foundProduct != null ? foundProduct.getName() : "Not found"));
+
+        // 3b. List All
+        System.out.println("\n[LIST ALL (Unordered - HashMap)]: ");
+        productRepository.listAll().forEach(System.out::println);
+
+        // 3c. Remove
+        productRepository.remove("A004");
+        System.out.println("\n[REMOVE] Product with ID A004 removed.");
+
+        // 3d. List All After Removal
+        System.out.println("\n[LIST AFTER REMOVAL]:");
+        productRepository.listAll().forEach(System.out::println);
     }
 
-    private void demonstrarOrdenacaoEProfiling() {
+    private void demonstrateAvlTree() {
         System.out.println("\n\n##########################################################");
-        System.out.println("### 5. DEMONSTRAÇÃO DE ORDENAÇÃO E PROFILING (MergeSort) ");
+        System.out.println("### 4. AVL TREE DEMONSTRATION (Name Indexing) ");
         System.out.println("##########################################################");
 
-        // Obter lista atual do repositório (itens restantes após remoção)
-        List<Produto> listaProdutos = repositorio.listarTodos();
-        
-        // --- 5a. Ordenação por Nome (Comparator) ---
-        Comparator<Produto> porNome = Comparator.comparing(Produto::getNome);
-        long tempoNome = sortAlgorithm.ordenar(listaProdutos, porNome);
+        // 4a. Search in Tree
+        Product foundInTree = nameIndex.search("Organic Honey");
+        System.out.println("\n[AVL SEARCH] Name 'Organic Honey': " + (foundInTree != null ? foundInTree.getId() : "Not found"));
 
-        System.out.println("\n[ORDENAÇÃO POR NOME (MergeSort)]: ");
-        listaProdutos.forEach(p -> System.out.println(" - " + p.getNome()));
-        
-        // Log em Milissegundos (ms)
-        long tempoMsNome = TimeUnit.NANOSECONDS.toMillis(tempoNome);
-        System.out.println("\n[LOG PROFILING] Tempo de Ordenação por Nome: " + tempoMsNome + " ms.");
-        
-        // --- 5b. Ordenação por Preço (Comparator) ---
-        listaProdutos = repositorio.listarTodos(); // Recarrega a lista desordenada
-        Comparator<Produto> porPreco = Comparator.comparingDouble(Produto::getPreco);
-        long tempoPreco = sortAlgorithm.ordenar(listaProdutos, porPreco);
+        // 4b. Inorder Listing (In-Order Traversal; returns items ordered by key (Name))
+        System.out.println("\n[INORDER PRINT (Sorted by Name - AVL)]: ");
+        List<Product> orderedList = nameIndex.inOrderList();
+        orderedList.forEach(p -> System.out.println(" - " + p.getName() + " (ID: " + p.getId() + ")"));
+    }
 
-        System.out.println("\n[ORDENAÇÃO POR PREÇO (MergeSort)]: ");
-        listaProdutos.forEach(p -> System.out.println(" - R$" + String.format("%.2f", p.getPreco()) + " - " + p.getNome()));
-        
-        long tempoMsPreco = TimeUnit.NANOSECONDS.toMillis(tempoPreco);
-        System.out.println("\n[LOG PROFILING] Tempo de Ordenação por Preço: " + tempoMsPreco + " ms.");
-        
-        // --- 5c. Ordenação por Categoria (Comparator) ---
-        listaProdutos = repositorio.listarTodos(); // Recarrega a lista desordenada
-        Comparator<Produto> porCategoria = Comparator.comparing(Produto::getCategoria);
-        long tempoCategoria = sortAlgorithm.ordenar(listaProdutos, porCategoria);
-        
-        System.out.println("\n[ORDENAÇÃO POR CATEGORIA (MergeSort)]: ");
-        listaProdutos.forEach(p -> System.out.println(" - Categoria: " + p.getCategoria() + " - " + p.getNome()));
-        
-        long tempoMsCategoria = TimeUnit.NANOSECONDS.toMillis(tempoCategoria);
-        System.out.println("\n[LOG PROFILING] Tempo de Ordenação por Categoria: " + tempoMsCategoria + " ms.");
-        
-        // --- 5d. Comparação com Em-Ordem (Integração de Algoritmos) ---
-        System.out.println("\n[COMPARAÇÃO DE ORDENAÇÃO - ORDEM ALFABÉTICA]:");
-        System.out.println("1. Ordenação Externa (MergeSort) por Nome levou " + tempoMsNome + " ms.");
-        System.out.println("2. Ordenação Interna da AVL (Listagem Em-Ordem por Nome) é intrinsecamente rápida (O(n)), pois a ordem é mantida durante as inserções.");
+    private void demonstrateSortingAndProfiling() {
+        System.out.println("\n\n##########################################################");
+        System.out.println("### 5. SORTING AND PROFILING DEMONSTRATION (MergeSort) ");
+        System.out.println("##########################################################");
+
+        // Get current list from repository (items remaining after removal)
+        List<Product> productList = productRepository.listAll();
+
+        // --- 5a. Sort by Name (Comparator) ---
+        Comparator<Product> byName = Comparator.comparing(Product::getName);
+        long sortTimeByName = sortingAlgorithm.sort(productList, byName);
+
+        System.out.println("\n[SORTED BY NAME (MergeSort)]: ");
+        productList.forEach(p -> System.out.println(" - " + p.getName()));
+
+        // Log in milliseconds
+        long sortTimeByNameMs = TimeUnit.NANOSECONDS.toMillis(sortTimeByName);
+        System.out.println("\n[LOG PROFILING] Sort Time by Name: " + sortTimeByNameMs + " ms.");
+
+        // --- 5b. Sort by Price (Comparator) ---
+        productList = productRepository.listAll(); // Reload unordered list
+        Comparator<Product> byPrice = Comparator.comparingDouble(Product::getPrice);
+        long sortTimeByPrice = sortingAlgorithm.sort(productList, byPrice);
+
+        System.out.println("\n[SORTED BY PRICE (MergeSort)]: ");
+        productList.forEach(p -> System.out.println(" - R$" + String.format("%.2f", p.getPrice()) + " - " + p.getName()));
+
+        long sortTimeByPriceMs = TimeUnit.NANOSECONDS.toMillis(sortTimeByPrice);
+        System.out.println("\n[LOG PROFILING] Sort Time by Price: " + sortTimeByPriceMs + " ms.");
+
+        // --- 5c. Sort by Category (Comparator) ---
+        productList = productRepository.listAll(); // Reload unordered list
+        Comparator<Product> byCategory = Comparator.comparing(Product::getCategory);
+        long sortTimeByCategory = sortingAlgorithm.sort(productList, byCategory);
+
+        System.out.println("\n[SORTED BY CATEGORY (MergeSort)]: ");
+        productList.forEach(p -> System.out.println(" - Category: " + p.getCategory() + " - " + p.getName()));
+
+        long sortTimeByCategoryMs = TimeUnit.NANOSECONDS.toMillis(sortTimeByCategory);
+        System.out.println("\n[LOG PROFILING] Sort Time by Category: " + sortTimeByCategoryMs + " ms.");
+
+        // --- 5d. Comparison with In-Order (Algorithm Integration) ---
+        System.out.println("\n[ORDER COMPARISON - ALPHABETICAL ORDER]:");
+        System.out.println("1. External ordering (MergeSort) by Name took " + sortTimeByNameMs + " ms.");
+        System.out.println("2. Internal ordering of the AVL (In-Order Listing by Name) is inherently quick (O(n)), as order is maintained during insertions.");
     }
 }
