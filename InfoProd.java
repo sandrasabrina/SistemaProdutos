@@ -2,7 +2,9 @@ package model;
 
 import java.lang.annotation.*;
 
-// Anotação @InfoProd, usada em Produto e RepositorioHash
+/**
+ * Anotação para marcar metadados de classes/atributos relacionados a produtos.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.FIELD})
 public @interface InfoProd {
