@@ -3,105 +3,102 @@ package algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
-// Implementação de Árvore AVL (Adelson-Velsky and Landis) para indexação balanceada
-// Assegura complexidade O(log n) para inserção e busca.
+/**
+ * Implementação de árvore AVL (balanceada) para indexação por chave.
+ * Mantém O(log n) em inserções e buscas.
+ *
+ * @param <K> tipo da chave (Comparable)
+ * @param <V> tipo do valor
+ */
 public class AVLTree<K extends Comparable<K>, V> implements Arvore<K, V> {
-    
-    // Representação do Nó
+
+    // Nó interno
     private class Node {
         K key;
         V value;
-        int height; // Altura do nó na árvore
-        Node left, right;
+        int height;
+        Node left;
+        Node right;
 
-        public Node(K key, V value) {
+        Node(K key, V value) {
             this.key = key;
             this.value = value;
             this.height = 1;
         }
     }
-    
+
     private Node root;
 
-    // Métodos utilitários
-    private int height(Node N) {
-        return (N == null) ? 0 : N.height;
+    // --- utilitários ---
+    private int nodeHeight(Node node) {
+        return (node == null) ? 0 : node.height;
     }
 
-    private int getBalance(Node N) {
-        return (N == null) ? 0 : height(N.left) - height(N.right);
+    private int getBalanceFactor(Node node) {
+        return (node == null) ? 0 : nodeHeight(node.left) - nodeHeight(node.right);
     }
 
-    // Rotações
+    // rotações
     private Node rightRotate(Node y) {
         Node x = y.left;
-        Node T2 = x.right;
+        Node t2 = x.right;
 
-        // Perform rotation
         x.right = y;
-        y.left = T2;
+        y.left = t2;
 
-        // Update heights
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        y.height = Math.max(nodeHeight(y.left), nodeHeight(y.right)) + 1;
+        x.height = Math.max(nodeHeight(x.left), nodeHeight(x.right)) + 1;
 
         return x;
     }
 
     private Node leftRotate(Node x) {
         Node y = x.right;
-        Node T2 = y.left;
+        Node t2 = y.left;
 
-        // Perform rotation
         y.left = x;
-        x.right = T2;
+        x.right = t2;
 
-        // Update heights
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        x.height = Math.max(nodeHeight(x.left), nodeHeight(x.right)) + 1;
+        y.height = Math.max(nodeHeight(y.left), nodeHeight(y.right)) + 1;
 
         return y;
     }
 
-    // Método de inserção recursiva
-    private Node insert(Node node, K key, V value) {
-        if (node == null)
-            return (new Node(key, value));
+    // inserção recursiva mantendo balanceamento
+    private Node insertNode(Node node, K key, V value) {
+        if (node == null) {
+            return new Node(key, value);
+        }
 
-        int compare = key.compareTo(node.key);
-
-        if (compare < 0)
-            node.left = insert(node.left, key, value);
-        else if (compare > 0)
-            node.right = insert(node.right, key, value);
-        else { // Chaves duplicadas: atualiza o valor e retorna
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0) {
+            node.left = insertNode(node.left, key, value);
+        } else if (cmp > 0) {
+            node.right = insertNode(node.right, key, value);
+        } else {
+            // mesma chave: atualiza valor
             node.value = value;
             return node;
         }
 
-        // 1. Atualiza altura
-        node.height = 1 + Math.max(height(node.left), height(node.right));
+        node.height = 1 + Math.max(nodeHeight(node.left), nodeHeight(node.right));
+        int balance = getBalanceFactor(node);
 
-        // 2. Obtém o fator de balanceamento
-        int balance = getBalance(node);
-
-        // 3. Casos de desbalanceamento e Rotações
-
-        // Left Left Case (Rotação Simples à Direita)
-        if (balance > 1 && key.compareTo(node.left.key) < 0)
+        // Left Left
+        if (balance > 1 && key.compareTo(node.left.key) < 0) {
             return rightRotate(node);
-
-        // Right Right Case (Rotação Simples à Esquerda)
-        if (balance < -1 && key.compareTo(node.right.key) > 0)
+        }
+        // Right Right
+        if (balance < -1 && key.compareTo(node.right.key) > 0) {
             return leftRotate(node);
-
-        // Left Right Case (Rotação Dupla: Esquerda, depois Direita)
+        }
+        // Left Right
         if (balance > 1 && key.compareTo(node.left.key) > 0) {
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
-
-        // Right Left Case (Rotação Dupla: Direita, depois Esquerda)
+        // Right Left
         if (balance < -1 && key.compareTo(node.right.key) < 0) {
             node.right = rightRotate(node.right);
             return leftRotate(node);
@@ -109,47 +106,43 @@ public class AVLTree<K extends Comparable<K>, V> implements Arvore<K, V> {
 
         return node;
     }
-    
-    // Método de busca recursiva
-    private V search(Node root, K key) {
-        if (root == null) {
+
+    // busca recursiva
+    private V searchNode(Node node, K key) {
+        if (node == null) {
             return null;
         }
-        int compare = key.compareTo(root.key);
-        if (compare == 0) {
-            return root.value;
-        } else if (compare < 0) {
-            return search(root.left, key);
-        } else {
-            return search(root.right, key);
-        }
+        int cmp = key.compareTo(node.key);
+        if (cmp == 0) return node.value;
+        if (cmp < 0) return searchNode(node.left, key);
+        return searchNode(node.right, key);
     }
 
-    // Travessia In-Order (Em-Ordem) para listar elementos ordenadamente
-    private void inOrder(Node node, List<V> list) {
-        if (node != null) {
-            inOrder(node.left, list);
-            list.add(node.value);
-            inOrder(node.right, list);
-        }
+    // travessia in-order
+    private void inOrderTraversal(Node node, List<V> out) {
+        if (node == null) return;
+        inOrderTraversal(node.left, out);
+        out.add(node.value);
+        inOrderTraversal(node.right, out);
     }
 
-    // --- Implementação da Interface Arvore ---
-
+    // --- interface Arvore ---
     @Override
     public void inserir(K chave, V valor) {
-        root = insert(root, chave, valor);
+        if (chave == null) throw new IllegalArgumentException("chave não pode ser nula");
+        root = insertNode(root, chave, valor);
     }
 
     @Override
     public V buscar(K chave) {
-        return search(root, chave);
+        if (chave == null) return null;
+        return searchNode(root, chave);
     }
 
     @Override
     public List<V> listarEmOrdem() {
-        List<V> list = new ArrayList<>();
-        inOrder(root, list);
-        return list;
+        List<V> result = new ArrayList<>();
+        inOrderTraversal(root, result);
+        return result;
     }
 }
