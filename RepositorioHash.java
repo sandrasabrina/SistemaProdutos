@@ -4,31 +4,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 import model.InfoProd;
 
-// Classe Genérica RepositorioHash<T>
+/**
+ * Implementação simples de repositório baseada em HashMap.
+ *
+ * @param <T> tipo da entidade
+ */
 @InfoProd(versao = "3.0", categoria = "Persistencia")
 public class RepositorioHash<T> implements Repositorio<T> {
-    
-    // Armazenamento interno: HashMap para acesso rápido por ID
+
     private final Map<String, T> storage = new HashMap<>();
-    
-    // Função para extrair o ID do objeto T (idExtractor)
     private final Function<T, String> idExtractor;
 
-    /**
-     * Construtor.
-     * @param idExtractor Uma função que recebe um objeto T e retorna sua String ID.
-     */
     public RepositorioHash(Function<T, String> idExtractor) {
-        this.idExtractor = idExtractor;
+        this.idExtractor = Objects.requireNonNull(idExtractor, "idExtractor não pode ser nulo");
     }
 
     @Override
     public void cadastrar(T item) {
+        Objects.requireNonNull(item, "item não pode ser nulo");
         String id = idExtractor.apply(item);
+        if (id == null || id.isBlank()) throw new IllegalArgumentException("ID extraído não pode ser nulo/vazio");
         storage.put(id, item);
     }
 
