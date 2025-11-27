@@ -105,7 +105,6 @@ public class SistemaProdutos {
     }
 
     private void demonstrarAnotacoes() {
-        // ... (Implementação de demonstração de anotações por Reflexão)
         System.out.println("\n\n##########################################################");
         System.out.println("### 1. LEITURA DE ANOTAÇÃO @InfoProd (Reflexão) ");
         System.out.println("##########################################################");
@@ -126,12 +125,12 @@ public class SistemaProdutos {
             System.out.println("  Categoria Padrão: " + infoRepo.categoria());
         }
 
-        // Exemplo de leitura de método (apenas para demonstrar Field/Method - não implementado em todos)
+        // Exemplo de busca de um método existente (listarTodos) via Reflection para demonstrar Type Introspection
         try {
-            Method metodo = RepositorioHash.class.getMethod("listarTodos");
-            System.out.println("\nMétodo 'listarTodos' encontrado via Reflection.");
+            Method metodoListarTodos = RepositorioHash.class.getMethod("listarTodos");
+            System.out.println("\nMétodo 'listarTodos' encontrado com sucesso em RepositorioHash via Reflection.");
         } catch (NoSuchMethodException e) {
-            System.err.println("Método listarTodos não encontrado.");
+            System.err.println("Erro: O método 'listarTodos' esperado não foi encontrado em RepositorioHash.");
         }
     }
 
@@ -150,8 +149,6 @@ public class SistemaProdutos {
         
         // 3c. Remover
         repositorio.remover("A004");
-        // Também remove da AVL para manter a sincronia
-        // Nota: A remoção em AVL é complexa e não foi solicitada, então apenas removemos do Hash para demonstração do CRUD.
         System.out.println("\n[REMOVER] Produto com ID A004 removido.");
         
         // 3d. Listar Todos Após Remoção
