@@ -3,13 +3,14 @@ package algorithm;
 import java.util.Comparator;
 import java.util.List;
 
-// Interface genérica para algoritmos de ordenação
+/**
+ * Contrato para algoritmos de ordenação que operam sobre List<T>.
+ *
+ * @param <T> tipo de elementos da lista
+ */
 public interface Ordenacao<T> {
     /**
-     * Ordena a lista usando o Comparator fornecido.
-     * @param lista A lista a ser ordenada.
-     * @param comparator O critério de comparação.
-     * @return O tempo de execução em nanosegundos.
+     * Ordena a lista usando o comparator e retorna tempo em nanos.
      */
     long ordenar(List<T> lista, Comparator<T> comparator);
 }
