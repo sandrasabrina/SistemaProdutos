@@ -1,8 +1,10 @@
-# Sistema de Gerenciamento de Produtos Naturais (SGPN)
+# Sistema de Gerenciamento de Produtos
 
-Este projeto demonstra a aplicação de conceitos avançados de Java, incluindo Herança, Polimorfismo, Genéricos, Interfaces, Anotações, Reflexão, Estruturas de Dados (Árvore AVL) e Algoritmos (MergeSort), além de tratamento de exceções e profiling de desempenho.
+Projeto para a disciplina de Linguagem de Programação II, ministrada pelo professor Alan de Oliveira Santana. 
 
-## Estrutura de Pacotes
+Utilizando um sistema de gerenciamento de produtos como modelo, são aplicados conceitos avançados de Java, incluindo Herança, Polimorfismo, Genéricos, Interfaces, Anotações, Reflexão, Estruturas de Dados (Árvore AVL) e Algoritmos (MergeSort), além de tratamento de exceções e profiling de desempenho.
+
+## Estrutura dos Pacotes
 
 | Pacote | Conteúdo | Descrição |
 | --------------- | :----- | :-------- |
@@ -12,9 +14,9 @@ Este projeto demonstra a aplicação de conceitos avançados de Java, incluindo 
 | repository | Repositorio.java, RepositorioHash.java | Interface e implementação genérica para persistência em memória. |
 | algorithm | Arvore.java, Ordenacao.java, AVLTree.java, MergeSort.java | Estruturas de dados e algoritmos de ordenação. |
 
-## Compilação e Execução
+## Como compilar e Executar
 
-Assumindo que o código está organizado em uma pasta src seguindo a estrutura de pacotes:
+É possível compilar o programa, assumindo que o código está organizado em uma pasta src, seguindo a estrutura de pacotes:
 
 1. Compilar todos os arquivos:
 
