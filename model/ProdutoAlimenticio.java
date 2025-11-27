@@ -3,12 +3,26 @@ package model;
 import exception.NegocioException;
 
 /**
- * Produto alimentício com data de validade.
+ * Representa um produto alimentício, com data de validade.
  */
 public class ProdutoAlimenticio extends Produto {
+
+    // Data de validade do produto no formato "AAAA-MM-DD"
     private final String dataValidade;
 
-    public ProdutoAlimenticio(String id, String nome, double preco, String categoria, int estoque, String produtorLocal, String dataValidade) throws NegocioException {
+    /**
+     * Construtor do produto alimentício.
+     * @param dataValidade Data de validade no formato "AAAA-MM-DD"
+     */
+    public ProdutoAlimenticio(
+            String id,
+            String nome,
+            double preco,
+            String categoria,
+            int estoque,
+            String produtorLocal,
+            String dataValidade
+    ) throws NegocioException {
         super(id, nome, preco, categoria, estoque, produtorLocal);
         this.dataValidade = dataValidade;
     }
