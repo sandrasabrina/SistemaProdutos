@@ -2,7 +2,11 @@ package repository;
 
 import java.util.List;
 
-// Interface genérica Repositorio<T>
+/**
+ * Contrato genérico para repositórios.
+ *
+ * @param <T> tipo de entidade armazenada
+ */
 public interface Repositorio<T> {
     void cadastrar(T item);
     T buscar(String id);
