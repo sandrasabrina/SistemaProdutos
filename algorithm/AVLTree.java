@@ -10,7 +10,7 @@ import java.util.List;
  * @param <K> tipo da chave (Comparable)
  * @param <V> tipo do valor
  */
-public class AVLTree<K extends Comparable<K>, V> implements Arvore<K, V> {
+public class ArvoreAVL<K extends Comparable<K>, V> implements Arvore<K, V> {
 
     // Nó interno
     private class Node {
