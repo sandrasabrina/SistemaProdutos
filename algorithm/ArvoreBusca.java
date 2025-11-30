@@ -8,7 +8,7 @@ import java.util.List;
  * @param <K> tipo da chave (Comparable)
  * @param <V> tipo do valor associado
  */
-public interface Arvore<K extends Comparable<K>, V> {
+public interface ArvoreBusca<K extends Comparable<K>, V> {
     /**
      * Insere ou atualiza um par (chave, valor) na estrutura.
      */
