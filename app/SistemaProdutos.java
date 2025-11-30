@@ -1,15 +1,15 @@
 package app;
 
-import algoritmo.ArvoreAVL;
-import algoritmo.ArvoreBusca;
-import algoritmo.MergeSort;
-import algoritmo.Ordenador;
-import excecao.ExcecaoNegocio;
-import modelo.InfoProd;
-import modelo.Produto;
-import modelo.ProdutoAlimenticio;
-import modelo.ProdutoArtesanal;
-import repositorio.RepositorioHash;
+import algorithm.ArvoreAVL;
+import algorithm.ArvoreBusca;
+import algorithm.MergeSort;
+import algorithm.Ordenacao;
+import exception.ExcecaoNegocio;
+import model.InfoProd;
+import model.Produto;
+import model.ProdutoAlimenticio;
+import model.ProdutoArtesanal;
+import repository.RepositorioHash;
 
 import java.lang.reflect.Method;
 import java.util.Comparator;
@@ -29,8 +29,8 @@ public class SistemaProdutos {
     // Índice adicional utilizando Árvore AVL (binária balanceada) para indexação rápida e ordenada por nome.
     private final ArvoreBusca<String, Produto> indicePorNome = new ArvoreAVL<>();
 
-    // Instância do algoritmo de ordenação. Aqui usamos o MergeSort.
-    private final Ordenador<Produto> ordenador = new MergeSort<>();
+    // Instância do algorittmo de ordenação. Aqui usamos o MergeSort.
+    private final Ordenacao<Produto> ordenacao = new MergeSort<>();
 
     /**
      * Método main: ponto de entrada do sistema.
@@ -219,7 +219,7 @@ public class SistemaProdutos {
 
         // Ordenação por nome (alfabética)
         Comparator<Produto> comparadorPorNome = Comparator.comparing(Produto::getNome);
-        long tempoNome = ordenador.ordenar(listaProdutos, comparadorPorNome);
+        long tempoNome = ordenacao.ordenar(listaProdutos, comparadorPorNome);
 
         System.out.println("\n[ORDENAÇÃO POR NOME (MergeSort)]: ");
         listaProdutos.forEach(produto -> System.out.println(" - " + produto.getNome()));
@@ -230,7 +230,7 @@ public class SistemaProdutos {
         // Ordenação por preço (crescente)
         listaProdutos = repositorioProdutos.listarTodos();
         Comparator<Produto> comparadorPorPreco = Comparator.comparingDouble(Produto::getPreco);
-        long tempoPreco = ordenador.ordenar(listaProdutos, comparadorPorPreco);
+        long tempoPreco = ordenacao.ordenar(listaProdutos, comparadorPorPreco);
 
         System.out.println("\n[ORDENAÇÃO POR PREÇO (MergeSort)]: ");
         listaProdutos.forEach(produto -> System.out.println(" - R$" + String.format("%.2f", produto.getPreco()) + " - " + produto.getNome()));
@@ -241,7 +241,7 @@ public class SistemaProdutos {
         // Ordenação por categoria (alfabética)
         listaProdutos = repositorioProdutos.listarTodos();
         Comparator<Produto> comparadorPorCategoria = Comparator.comparing(Produto::getCategoria);
-        long tempoCategoria = ordenador.ordenar(listaProdutos, comparadorPorCategoria);
+        long tempoCategoria = ordenacao.ordenar(listaProdutos, comparadorPorCategoria);
 
         System.out.println("\n[ORDENAÇÃO POR CATEGORIA (MergeSort)]: ");
         listaProdutos.forEach(produto -> System.out.println(" - Categoria: " + produto.getCategoria() + " - " + produto.getNome()));
