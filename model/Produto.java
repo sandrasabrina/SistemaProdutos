@@ -1,6 +1,6 @@
 package model;
 
-import exception.NegocioException;
+import exception.ExcecaoNegocio;
 
 /**
  * Classe abstrata que representa um produto genérico do sistema.
@@ -25,7 +25,7 @@ public abstract class Produto implements Comparable<Produto> {
     /**
      * Construtor base para todos os produtos. Realiza validações de regra de negócio.
      */
-    public Produto(String id, String nome, double preco, String categoria, int estoque, String produtorLocal) throws NegocioException {
+    public Produto(String id, String nome, double preco, String categoria, int estoque, String produtorLocal) throws ExcecaoNegocio {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("ID não pode ser vazio.");
         }
@@ -33,10 +33,10 @@ public abstract class Produto implements Comparable<Produto> {
             throw new IllegalArgumentException("Nome não pode ser vazio.");
         }
         if (preco <= 0) {
-            throw new NegocioException("Preço deve ser positivo. Valor fornecido: " + preco);
+            throw new ExcecaoNegocio("Preço deve ser positivo. Valor fornecido: " + preco);
         }
         if (estoque < 0) {
-            throw new NegocioException("Estoque não pode ser negativo. Valor fornecido: " + estoque);
+            throw new ExcecaoNegocio("Estoque não pode ser negativo. Valor fornecido: " + estoque);
         }
         this.id = id;
         this.nome = nome;
