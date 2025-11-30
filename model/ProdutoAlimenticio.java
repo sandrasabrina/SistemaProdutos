@@ -1,6 +1,6 @@
 package model;
 
-import exception.NegocioException;
+import exception.ExcecaoNegocio;
 
 /**
  * Representa um produto alimentício, com data de validade.
@@ -22,7 +22,7 @@ public class ProdutoAlimenticio extends Produto {
             int estoque,
             String produtorLocal,
             String dataValidade
-    ) throws NegocioException {
+    ) throws ExcecaoNegocio {
         super(id, nome, preco, categoria, estoque, produtorLocal);
         this.dataValidade = dataValidade;
     }
