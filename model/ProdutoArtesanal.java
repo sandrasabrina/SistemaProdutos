@@ -1,6 +1,6 @@
 package model;
 
-import exception.NegocioException;
+import exception.ExcecaoNegocio;
 
 /**
  * Representa um produto artesanal, destacando seu material principal.
@@ -22,7 +22,7 @@ public class ProdutoArtesanal extends Produto {
             int estoque,
             String produtorLocal,
             String material
-    ) throws NegocioException {
+    ) throws ExcecaoNegocio {
         super(id, nome, preco, categoria, estoque, produtorLocal);
         this.material = material;
     }
