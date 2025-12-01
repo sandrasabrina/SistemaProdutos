@@ -30,10 +30,11 @@ public class MergeSort<T> implements Ordenacao<T> {
         if (lista.size() <= 1) return lista;
 
         int mid = lista.size() / 2;
-        // criar cópias das sublistas para evitar views ligadas à lista original
+        // Cria cópias e divide a lista em duas sublistas para evitar views ligadas à lista original
         List<T> left = mergeSort(new ArrayList<>(lista.subList(0, mid)), comparator);
         List<T> right = mergeSort(new ArrayList<>(lista.subList(mid, lista.size())), comparator);
-
+        
+        // Combina as sublistas ordenadas
         return merge(left, right, comparator);
     }
 
