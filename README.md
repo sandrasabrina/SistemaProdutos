@@ -9,24 +9,24 @@ Utilizando um sistema de gerenciamento de produtos como modelo, são aplicados c
 | Pacote | Conteúdo | Descrição |
 | --------------- | :----- | :-------- |
 | app | SistemaProdutos.java | Classe principal de execução e demonstração. |
-| exception | NegocioException.java | Exceção customizada para regras de negócio (e.g., preço negativo). |
+| exception | ExcecaoNegocio.java | Exceção customizada para regras de negócio (e.g., preço negativo). |
 | model | InfoProd.java, Produto.java, ProdutoAlimenticio.java, ProdutoArtesanal.java | Classes de dados e a anotação customizada. |
 | repository | Repositorio.java, RepositorioHash.java | Interface e implementação genérica para persistência em memória. |
-| algorithm | Arvore.java, Ordenacao.java, AVLTree.java, MergeSort.java | Estruturas de dados e algoritmos de ordenação. |
+| algorithm | ArvoreBusca.java, Ordenacao.java, ArvoreAVL.java, MergeSort.java | Estruturas de dados e algoritmos de ordenação. |
 
 ## Como compilar e Executar
 
-É possível compilar o programa, assumindo que o código está organizado em uma pasta src, seguindo a estrutura de pacotes:
+É possível compilar o programa seguindo a estrutura de pacotes:
 
 1. Compilar todos os arquivos:
 
 ```bash
-# A partir do diretório raiz do projeto (acima de 'src')
-javac -d bin src/app/*.java src/exception/*.java src/model/*.java src/repository/*.java src/algorithm/*.java
+# A partir do diretório raiz do projeto
+javac -d bin app/*.java exception/*.java model/*.java repository/*.java algorithm/*.java
 ```
 2. Executar a Aplicação Principal:
 
 ```bash
-# A partir do diretório raiz do projeto (acima de 'src')
+# A partir do diretório raiz do projeto
 java -cp bin app.SistemaProdutos
 ```
