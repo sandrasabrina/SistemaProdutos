@@ -118,7 +118,7 @@ public class ArvoreAVL<K extends Comparable<K>, V> implements ArvoreBusca<K, V> 
         return searchNode(node.right, key);
     }
 
-    // travessia in-order
+    // travessia em ordem
     private void inOrderTraversal(Node node, List<V> out) {
         if (node == null) return;
         inOrderTraversal(node.left, out);
