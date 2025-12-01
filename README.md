@@ -14,7 +14,7 @@ Utilizando um sistema de gerenciamento de produtos como modelo, são aplicados c
 | repository | Repositorio.java, RepositorioHash.java | Interface e implementação genérica para persistência em memória. |
 | algorithm | ArvoreBusca.java, Ordenacao.java, ArvoreAVL.java, MergeSort.java | Estruturas de dados e algoritmos de ordenação. |
 
-## Como compilar e Executar
+## Como compilar e executar
 
 É possível compilar o programa seguindo a estrutura de pacotes:
 
